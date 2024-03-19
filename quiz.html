@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Quiz</title>
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        #quiz-container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .option {
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <h1>Java Quiz</h1>
+
+    <!-- Question 1 -->
+    <div class="question" id="question1">
+        <p>1. What is the output of the following code?</p>
+        <pre>
+            <code>
+                public class Example {
+                    public static void main(String[] args) {
+                        int x = 5;
+                        System.out.println(x++);
+                    }
+                }
+            </code>
+        </pre>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q1" value="a"> 5</li>
+            <li class="option"><input type="radio" name="q1" value="b"> 6</li>
+            <li class="option"><input type="radio" name="q1" value="c"> 7</li>
+            <li class="option"><input type="radio" name="q1" value="d"> 4</li>
+        </ul>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="question" id="question2">
+        <p>2. Which keyword is used to prevent method overriding in Java?</p>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q2" value="a"> static</li>
+            <li class="option"><input type="radio" name="q2" value="b"> final</li>
+            <li class="option"><input type="radio" name="q2" value="c"> private</li>
+            <li class="option"><input type="radio" name="q2" value="d"> abstract</li>
+        </ul>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="question" id="question3">
+        <p>3. What is the Java keyword used to allocate memory?</p>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q3" value="a"> alloc</li>
+            <li class="option"><input type="radio" name="q3" value="b"> new</li>
+            <li class="option"><input type="radio" name="q3" value="c"> malloc</li>
+            <li class="option"><input type="radio" name="q3" value="d"> allocate</li>
+        </ul>
+    </div>
+
+    <!-- Question 4 -->
+    <div class="question" id="question4">
+        <p>4. What is the default value of the char datatype in Java?</p>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q4" value="a"> '0'</li>
+            <li class="option"><input type="radio" name="q4" value="b"> '\u0000'</li>
+            <li class="option"><input type="radio" name="q4" value="c"> 0</li>
+            <li class="option"><input type="radio" name="q4" value="d"> null</li>
+        </ul>
+    </div>
+
+    <!-- Question 5 -->
+    <div class="question" id="question5">
+        <p>5. What is the purpose of the 'super' keyword in Java?</p>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q5" value="a"> To access the superclass methods and fields</li>
+            <li class="option"><input type="radio" name="q5" value="b"> To invoke the superclass constructor</li>
+            <li class="option"><input type="radio" name="q5" value="c"> To refer to the current class instance</li>
+            <li class="option"><input type="radio" name="q5" value="d"> To create an instance of the superclass</li>
+        </ul>
+    </div>
+
+    <!-- Question 6 -->
+    <div class="question" id="question6">
+        <p>6. What is the correct way to declare a constant variable in Java?</p>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q6" value="a"> const int x = 10;</li>
+            <li class="option"><input type="radio" name="q6" value="b"> final int x = 10;</li>
+            <li class="option"><input type="radio" name="q6" value="c"> static final int x = 10;</li>
+            <li class="option"><input type="radio" name="q6" value="d"> final static int x = 10;</li>
+        </ul>
+    </div>
+
+    <!-- Question 7 -->
+    <div class="question" id="question7">
+        <p>7. What is the output of the following code?</p>
+        <pre>
+            <code>
+                public class LoopExample {
+                    public static void main(String[] args) {
+                        int i = 0;
+                        while (i < 5) {
+                            System.out.print(i + " ");
+                            i++;
+                        }
+                    }
+                }
+            </code>
+        </pre>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q7" value="a"> 0 1 2 3 4</li>
+            <li class="option"><input type="radio" name="q7" value="b"> 1 2 3 4 5</li>
+            <li class="option"><input type="radio" name="q7" value="c"> 0 1 2 3</li>
+            <li class="option"><input type="radio" name="q7" value="d"> 1 2 3 4</li>
+        </ul>
+    </div>
+
+    <!-- Question 8 -->
+    <div class="question" id="question8">
+        <p>8. Which of the following is not a valid primitive data type in Java?</p>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q8" value="a"> int</li>
+            <li class="option"><input type="radio" name="q8" value="b"> char</li>
+            <li class="option"><input type="radio" name="q8" value="c"> float</li>
+            <li class="option"><input type="radio" name="q8" value="d"> string</li>
+        </ul>
+    </div>
+
+    <!-- Question 9 -->
+    <div class="question" id="question9">
+        <p>9. What is the purpose of the 'this' keyword in Java?</p>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q9" value="a"> To refer to the current class instance</li>
+            <li class="option"><input type="radio" name="q9" value="b"> To invoke the superclass constructor</li>
+            <li class="option"><input type="radio" name="q9" value="c"> To access the superclass methods and fields</li>
+            <li class="option"><input type="radio" name="q9" value="d"> To create an instance of the superclass</li>
+        </ul>
+    </div>
+
+    <!-- Question 10 -->
+    <div class="question" id="question10">
+        <p>10. What is the output of the following code?</p>
+        <pre>
+            <code>
+                public class Example {
+                    public static void main(String[] args) {
+                        int x = 5;
+                        System.out.println(++x);
+                    }
+                }
+            </code>
+        </pre>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q10" value="a"> 5</li>
+            <li class="option"><input type="radio" name="q10" value="b"> 6</li>
+            <li class="option"><input type="radio" name="q10" value="c"> 7</li>
+            <li class="option"><input type="radio" name="q10" value="d"> 4</li>
+        </ul>
+    </div>
+
+    <!-- Question 11 -->
+    <div class="question" id="question11">
+        <p>11. What is the purpose of the 'break' statement in Java?</p>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q11" value="a"> To skip the current iteration of a loop</li>
+            <li class="option"><input type="radio" name="q11" value="b"> To exit a loop</li>
+            <li class="option"><input type="radio" name="q11" value="c"> To jump to a specific label in the code</li>
+            <li class="option"><input type="radio" name="q11" value="d"> To terminate the program</li>
+        </ul>
+    </div>
+
+    <!-- Question 12 -->
+    <div class="question" id="question12">
+        <p>12. Which of the following is true about the 'NullPointerException' in Java?</p>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q12" value="a"> It is a checked exception</li>
+            <li class="option"><input type="radio" name="q12" value="b"> It is a runtime exception</li>
+            <li class="option"><input type="radio" name="q12" value="c"> It is an error</li>
+            <li class="option"><input type="radio" name="q12" value="d"> It is an unchecked exception</li>
+        </ul>
+    </div>
+
+    <!-- Question 13 -->
+    <div class="question" id="question13">
+        <p>13. What is the purpose of the 'try', 'catch', and 'finally' blocks in Java?</p>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q13" value="a"> To handle exceptions</li>
+            <li class="option"><input type="radio" name="q13" value="b"> To declare variables</li>
+            <li class="option"><input type="radio" name="q13" value="c"> To define methods</li>
+            <li class="option"><input type="radio" name="q13" value="d"> To create loops</li>
+        </ul>
+    </div>
+
+    <!-- Question 14 -->
+    <div class="question" id="question14">
+        <p>14. What is the purpose of the 'implements' keyword in Java?</p>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q14" value="a"> To implement an interface</li>
+            <li class="option"><input type="radio" name="q14" value="b"> To extend a class</li>
+            <li class="option"><input type="radio" name="q14" value="c"> To create an instance of a class</li>
+            <li class="option"><input type="radio" name="q14" value="d"> To declare a variable</li>
+        </ul>
+    </div>
+
+    <!-- Question 15 -->
+    <div class="question" id="question15">
+        <p>15. Which of the following is not a valid access modifier in Java?</p>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q15" value="a"> private</li>
+            <li class="option"><input type="radio" name="q15" value="b"> protected</li>
+            <li class="option"><input type="radio" name="q15" value="c"> package-private</li>
+            <li class="option"><input type="radio" name="q15" value="d"> global</li>
+        </ul>
+    </div>
+
+    <!-- Question 16 -->
+    <div class="question" id="question16">
+        <p>16. What is the purpose of the 'instanceof' operator in Java?</p>
+        <ul class="options">
+            <li class="option"><input type="radio" name="q16" value="a"> To compare two objects</li>
+            <li class="option"><input type="radio" name="q16" value="b"> To check if an object is an instance of a particular class</li>
+            <li class="option"><input type="radio" name="q16" value="c"> To create an instance of a class</li>
+            <li class="option"><input type="radio" name="q16" value="d"> To check if an object is null</li>
+        </ul>
+    </div>
+    <div class="button"><button onclick="submitQuiz()">Submit</button></div>
+    </div>
+</body>
+<script>
+    const answers = {
+        q1: "b",
+        q2: "b",
+        q3: "b",
+        q4: "b",
+        q5: "a",
+        q6: "c",
+        q7: "a",
+        q8: "d",
+        q9: "a",
+        q10: "b",
+        q11: "b",
+        q12: "b",
+        q13: "a",
+        q14: "a",
+        q15: "d",
+        q16: "b"
+        // Add more answers for each question
+    };
+
+    let submitted = false;
+
+    function submitQuiz() {
+        if (submitted) return;
+
+        const resultElement = document.getElementById('result');
+        const incorrectAnswers = [];
+        let score = 0;
+
+        for (const questionId in answers) {
+            const selectedOption = document.querySelector(`input[name=${questionId}]:checked`);
+            if (selectedOption) {
+                const selectedValue = selectedOption.value;
+                const isCorrect = selectedValue === answers[questionId];
+
+                if (isCorrect) {
+                    score++;
+                } else {
+                    incorrectAnswers.push({ questionId, selectedValue });
+                    highlightCorrectOption(questionId);
+                }
+            }
+        }
+
+        displayResults(score, incorrectAnswers);
+        submitted = true;
+    }
+
+    function displayResults(score, incorrectAnswers) {
+        const resultElement = document.getElementById('result');
+        resultElement.innerHTML = `<p>Your score is ${score} out of ${Object.keys(answers).length}.</p>`;
+
+        if (incorrectAnswers.length > 0) {
+            resultElement.innerHTML += "<h3>Incorrect Answers:</h3>";
+            incorrectAnswers.forEach(answer => {
+                resultElement.innerHTML += `<p>Question ${answer.questionId}: Your answer was ${answer.selectedValue}, Correct answer was ${answers[answer.questionId]}</p>`;
+            });
+        }
+    }
+    // Highlights the correct option for a given question ID.
+    // 
+    // Parameters:
+    // - questionId: the ID of the question to highlight the correct option for.
+    // 
+    // Returns: undefined
+    function highlightCorrectOption(questionId) {
+        const correctOption = document.querySelector(`input[name=${questionId}][value=${answers[questionId]}]`);
+        if (correctOption) {
+            correctOption.parentElement.classList.add('correct');
+        }
+    }
+</script>
+</html>

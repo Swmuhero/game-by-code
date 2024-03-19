@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>15 Puzzle Game</title>
+  <style>
+    body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f0f000;
+}
+
+#puzzle-container {
+  display: none;
+  grid-template-columns: repeat(4, 80px);
+  grid-gap: 5px;
+  background-color: #ffffff00;
+  border: 5px solid #3498db;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.tile {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3498db;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.3s;
+  border-radius: 5px;
+}
+
+.empty {
+  background-color: #ecf0f1;
+  cursor: default;
+}
+
+.congrats {
+  display: none;
+  text-align: center;
+  font-size: 24px;
+  color: #2ecc71;
+  margin-top: 20px;
+}
+
+#start-button {
+  background-color: #2ecc71;
+  color: #fff;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+  </style>
+</head>
+<body>
+  <button id="start-button">Start Game</button>
+  <div id="puzzle-container"></div>
+  <div id="congrats" class="congrats">Congratulations! Puzzle Solved!</div>
+  <script>
+    const startButton = document.getElementById("start-button");
+const puzzleContainer = document.getElementById("puzzle-container");
+const congratsMessage = document.getElementById("congrats");
+let tiles;
+
+startButton.addEventListener("click", startGame);
+
+function startGame() {
+  tiles = Array.from({ length: 15 }, (_, index) => index + 1);
+  tiles.push(null);
+
+  // Shuffle the tiles
+  for (let i = tiles.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+  }
+
+  createPuzzle();
+  startButton.style.display = "none";
+}
+
+function createPuzzle() {
+  puzzleContainer.style.display = "grid";
+  puzzleContainer.innerHTML = ""; // Clear the container
+
+  tiles.forEach((number, index) => {
+    const tile = document.createElement("div");
+    tile.classList.add("tile");
+    if (number === null) {
+      tile.classList.add("empty");
+    } else {
+      tile.textContent = number;
+      tile.addEventListener("click", () => moveTile(index));
+    }
+    puzzleContainer.appendChild(tile);
+  });
+}
+
+function moveTile(index) {
+  const emptyIndex = tiles.indexOf(null);
+
+  // Check if the clicked tile is adjacent to the empty space
+  if (isAdjacent(index, emptyIndex)) {
+    // Swap the positions of the clicked tile and the empty space
+    [tiles[index], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[index]];
+
+    // Update the puzzle UI
+    updatePuzzle();
+
+    // Check if the puzzle is solved
+    if (isPuzzleSolved()) {
+      showCongratsMessage();
+    }
+  }
+}
+
+function isAdjacent(index1, index2) {
+  const row1 = Math.floor(index1 / 4);
+  const col1 = index1 % 4;
+  const row2 = Math.floor(index2 / 4);
+  const col2 = index2 % 4;
+
+  return Math.abs(row1 - row2) + Math.abs(col1 - col2) === 1;
+}
+
+function updatePuzzle() {
+  puzzleContainer.innerHTML = ""; // Clear the container
+
+  tiles.forEach((number, index) => {
+    const tile = document.createElement("div");
+    tile.classList.add("tile");
+    if (number === null) {
+      tile.classList.add("empty");
+    } else {
+      tile.textContent = number;
+      tile.addEventListener("click", () => moveTile(index));
+    }
+    puzzleContainer.appendChild(tile);
+  });
+}
+
+function isPuzzleSolved() {
+  for (let i = 0; i < tiles.length - 1; i++) {
+    if (tiles[i] !== i + 1) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function showCongratsMessage() {
+  congratsMessage.style.display = "block";
+}
+
+  </script>
+</body>
+</html>

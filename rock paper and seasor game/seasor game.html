@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="seasor game.css">
+</head>
+<body>
+
+    <div id="game-container">
+        <h1>Rock Paper Scissors</h1>
+
+        <div id="result" style="display: none;">Choose your move!</div>
+
+        <div id="choices" style="display: none;">
+            <div class="choice1" onclick="playRound('rock')"></div>
+            <div class="choice2" onclick="playRound('paper')"></div>
+            <div class="choice3" onclick="playRound('scissors')"></div>
+        </div>
+
+        <div id="score" style="display: none;">Score: <span id="player-score">0</span> - <span id="computer-score">0</span></div>
+
+        <div class="game-buttons">
+            <button id="start-button" class="game-button" onclick="startGame()">Start Game</button>
+            <button id="restart-button" class="game-button" onclick="restartGame()" style="display: none;">Restart Game</button>
+        </div>
+    </div>
+
+    <script>
+        let playerScore = 0;
+        let computerScore = 0;
+        let roundsPlayed = 0;
+
+        function startGame() {
+            document.getElementById('start-button').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('choices').style.display = 'flex';
+            document.getElementById('score').style.display = 'block';
+        }
+
+        function playRound(playerChoice) {
+            const choices = ['rock', 'paper', 'scissors'];
+            const computerChoice = choices[Math.floor(Math.random() * 3)];
+            
+            // Determine the winner
+            let result;
+            if (playerChoice === computerChoice) {
+                result = "It's a tie!";
+            } else if (
+                (playerChoice === 'rock' && computerChoice === 'scissors') ||
+                (playerChoice === 'paper' && computerChoice === 'rock') ||
+                (playerChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                result = "You win!";
+                playerScore++;
+            } else {
+                result = "You lose!";
+                computerScore++;
+            }
+
+            // Display the result and update the score
+            document.getElementById('result').innerHTML = `You chose ${playerChoice}. Computer chose ${computerChoice}. ${result}`;
+            document.getElementById('player-score').innerHTML = playerScore;
+            document.getElementById('computer-score').innerHTML = computerScore;
+
+            roundsPlayed++;
+
+            if (roundsPlayed === 10) {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            let finalResult;
+            if (playerScore > computerScore) {
+                finalResult = "You win the game!";
+            } else if (playerScore < computerScore) {
+                finalResult = "You lose the game!";
+            } else {
+                finalResult = "It's a tie!";
+            }
+
+            document.getElementById('result').innerHTML = finalResult;
+            document.getElementById('choices').style.display = 'none';
+            document.getElementById('score').style.marginTop = '40px';
+            document.getElementById('restart-button').style.display = 'block';
+        }
+
+        function restartGame() {
+            playerScore = 0;
+            computerScore = 0;
+            roundsPlayed = 0;
+
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('choices').style.display = 'none';
+            document.getElementById('score').style.display = 'none';
+            document.getElementById('start-button').style.display = 'block';
+            document.getElementById('restart-button').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>

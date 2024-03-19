@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="game-container"></div>
+  <input type="text" id="user-input" placeholder="Type the falling word and press Enter">
+  <div id="score">Score: 0</div>
+  <div id="timer">Time: 60s</div>
+  <div id="game-over">Game Over! Your Score: <span id="final-score">0</span></div>
+  <button id="start-btn">Start</button>
+  <button id="restart-btn" style="display: none;">Restart</button>
+
+  <audio id="correct-sound" src="correct.mp3" preload="auto"></audio>
+  <audio id="incorrect-sound" src="incorrect.mp3" preload="auto"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>

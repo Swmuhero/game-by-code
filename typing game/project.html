@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<style>
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f0f0;
+    background-image: url('background.jpg') center center no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  #game-container {
+    position: relative;
+    width: 80%;
+    height: 80vh;
+    border: 5px solid #333;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .falling-word {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    pointer-events: none;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  
+  .correct-word {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+  
+  #user-input {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #333;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  #score,
+  #timer {
+    position: absolute;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  #score {
+    top: 10px;
+    left: 10px;
+  }
+  
+  #timer {
+    top: 10px;
+    right: 10px;
+  }
+  
+  #game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    display: none;
+    transition: opacity 0.5s;
+  }
+  
+  #start-btn,
+  #restart-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+  }
+  
+</style>
+<body>
+  <div id="game-container"></div>
+  <input type="text" id="user-input" placeholder="Type the falling word and press Enter">
+  <div id="score">Score: 0</div>
+  <div id="timer">Time: 60s</div>
+  <div id="game-over">Game Over! Your Score: <span id="final-score">0</span></div>
+  <button id="start-btn">Start</button>
+  <button id="restart-btn" style="display: none;">Restart</button>
+
+  <audio id="correct-sound" src="correct.mp3" preload="auto"></audio>
+  <audio id="incorrect-sound" src="incorrect.mp3" preload="auto"></audio>
+
+  <script>
+    const words = [
+    'apple', 'banana', 'orange', 'grape', 'cherry', 'watermelon', 'strawberry', 'blueberry', 'kiwi', 'pineapple',
+  'lemon', 'mango', 'peach', 'pear', 'plum', 'raspberry', 'blackberry', 'apricot', 'coconut', 'fig',
+  'guava', 'nectarine', 'papaya', 'passionfruit', 'pomegranate', 'cranberry', 'currant', 'date', 'elderberry',
+  'kiwi', 'mulberry', 'lime', 'lychee', 'persimmon', 'quince', 'book', 'computer', 'keyboard', 'mouse', 'screen',
+  'printer', 'speaker', 'headphones', 'microphone', 'tablet', 'lamp', 'chair', 'table', 'couch', 'bed',
+  'window', 'door', 'mirror', 'clock', 'painting', 'plant', 'flower', 'vase', 'cup', 'plate', 'fork',
+  'spoon', 'knife', 'napkin', 'tablecloth', 'oven', 'stove', 'refrigerator', 'sink', 'dishwasher', 'toaster',
+  'blender', 'mixer', 'microwave', 'potato', 'carrot', 'tomato', 'broccoli', 'cucumber', 'onion', 'garlic',
+  'pepper', 'lettuce', 'spinach', 'zucchini', 'eggplant', 'cabbage', 'avocado', 'bean', 'pea', 'corn', 'rice',
+  'pasta', 'bread', 'cake', 'cookie', 'chocolate', 'ice cream', 'pizza', 'burger', 'fries', 'hotdog', 'sandwich',
+  'soup', 'salad', 'steak', 'chicken', 'fish', 'shrimp', 'sushi', 'rice', 'noodle', 'soup', 'sauce', 'spice',
+  'salt', 'pepper', 'sugar', 'flour', 'oil', 'vinegar', 'water', 'juice', 'soda', 'tea', 'coffee',
+  // Additional words (Add more if needed)
+  'hat', 'shoe', 'shirt', 'pants', 'jacket', 'socks', 'glasses', 'watch', 'ring', 'bracelet',
+  'necklace', 'earrings', 'umbrella', 'bag', 'backpack', 'wallet', 'key', 'phone', 'laptop', 'tablet',
+  'camera', 'brush', 'comb', 'mirror', 'towel', 'soap', 'shampoo', 'toothbrush', 'toothpaste', 'perfume',
+  'candle', 'flowerpot', 'cushion', 'blanket', 'pillow', 'curtain', 'rug', 'lampshade', 'frame', 'calendar',
+  'map', 'globe', 'clock', 'candlestick', 'flag', 'umbrella', 'guitar', 'violin', 'piano', 'trumpet', 'flute',
+  'drum', 'accordion', 'saxophone', 'harp', 'microscope', 'telescope', 'binoculars', 'compass', 'thermometer', 'barometer',
+  'ruler', 'scissors', 'tape', 'glue', 'calculator', 'notebook', 'journal', 'diary', 'folder', 'envelope', 'pen',
+  'pencil', 'marker', 'crayon', 'paint', 'canvas', 'easel', 'palette', 'tapestry', 'sculpture', 'statue', 'vase',
+  'figurine', 'photograph', 'drawing', 'sketch', 'painting', 'charcoal', 'pastel', 'watercolor', 'oil paint', 'acrylic paint',
+  // Additional words (New)
+  'alphabet', 'alligator', 'balloon', 'butterfly', 'caterpillar', 'dragonfly', 'elephant', 'firefly', 'giraffe', 'hamburger',
+  'iceberg', 'jellyfish', 'kangaroo', 'lighthouse', 'marshmallow', 'nightingale', 'octopus', 'penguin', 'quasar', 'rhinoceros',
+  'straw', 'telephone', 'umbilical', 'vibration', 'waterfall', 'xylophone', 'yogurt', 'zeppelin',
+  'abacus', 'bobsled', 'candelabra', 'dumbwaiter', 'embargo', 'fandango', 'gazebo', 'haphazard', 'iguana', 'jamboree',
+  'kaleidoscope', 'limousine', 'marmalade', 'nautical', 'oblivion', 'paradox', 'quizzical', 'rhapsody', 'synchronize', 'tantalize',
+  'ubiquitous', 'vortex', 'wavelength', 'xenophobe', 'yesterday', 'zoologist', 'aardvark', 'abacus', 'abandon', 'abbreviate', 'aberration', 'abhorrent', 'abide', 'abjure', 'abnormal', 'abominable',
+  'abound', 'abridge', 'abscond', 'absolute', 'absolve', 'abstain', 'abstruse', 'abundant', 'academia', 'accelerate',
+  'accentuate', 'accessible', 'acclaim', 'acclimate', 'accommodate', 'accomplice', 'accumulate', 'accurate', 'acerbic',
+  'achieve', 'acknowledge', 'acoustic', 'acquiesce', 'acquire', 'acrimonious', 'activate', 'adapt', 'addictive', 'adequate',
+  'adhere', 'adjudicate', 'adjure', 'adjust', 'admonish', 'adorn', 'adulate', 'adulterate', 'adumbrate', 'adventurous',
+  'aesthetic', 'affable', 'affectation', 'affirm', 'affluent', 'aggrandize', 'aggregate', 'agile', 'agrarian', 'alacrity',
+  'alchemy', 'alias', 'alleviate', 'allocate', 'allude', 'altruistic', 'amalgamate', 'ambiguous', 'ambivalence', 'ameliorate',
+  'amiable', 'amorous', 'anachronistic', 'analogous', 'anathema', 'ancillary', 'anecdote', 'anguish', 'animosity', 'annotate',
+  'anomalous', 'antagonize', 'antecedent', 'antediluvian', 'anterior', 'antipathy', 'antiquated', 'apathetic', 'aplomb', 'apocryphal',
+  'apoplexy', 'apostrophe', 'apparition', 'appease', 'apprehensive', 'arcane', 'archaic', 'arduous', 'articulate', 'ascertain',
+  'ascribe', 'aspire', 'assail', 'assent', 'assert', 'assiduous', 'assimilate', 'assuage', 'astute', 'asunder',
+  'audacious', 'augment', 'auspicious', 'austere', 'authentic', 'avarice', 'aversion', 'avid', 'avow', 'axiomatic',
+  'baleful', 'balk', 'banal', 'belligerent', 'benevolent', 'bequeath', 'bereft', 'blatant', 'bombastic', 'boorish',
+  'brazen', 'brusque', 'burgeon', 'bureaucracy', 'cacophony', 'cadence', 'cajole', 'calamity', 'calibrate', 'candid',
+  'canny', 'capacious', 'capitulate', 'capricious', 'castigate', 'catalyst', 'caustic', 'cavort', 'celerity', 'censure',
+  'cerulean', 'chagrin', 'charlatan', 'chicanery', 'chide', 'chronicle', 'circuitous', 'circumlocution', 'circumscribe', 'clamor',
+  'clemency', 'cogent', 'cognizant', 'colloquial', 'commensurate', 'compendium', 'complacent', 'comport', 'concede', 'conceive',
+  'conciliate', 'condescend', 'confound', 'congeal', 'conjecture', 'conjure', 'connive', 'connoisseur', 'consecrate', 'consign',
+  'consternation', 'consummate', 'contemplate', 'contrite', 'convivial', 'corroborate', 'cosmopolitan', 'cower', 'credulous', 'cursory',
+  'cynical', 'dauntless', 'dearth', 'debilitate', 'debonair', 'decimate', 'decorum', 'deferential', 'defile', 'deleterious',
+  'demagogue', 'denigrate', 'deprecate', 'deride', 'derivative', 'despondent', 'deter', 'detract', 'deviate', 'diaphanous',
+  'diffident', 'dilapidated', 'disconcert', 'discursive', 'disparate', 'disseminate', 'dissuade', 'divulge', 'dogmatic', 'duplicity',
+  'ebullient', 'eclectic', 'effervescent', 'efficacious', 'egregious', 'elicit', 'eloquent', 'emaciate', 'emancipate', 'embellish',
+  'emulate', 'enervate', 'enfranchise', 'engender', 'enigma', 'enrapture', 'ephemeral', 'epiphany', 'epitome', 'equivocal',
+  'erudite', 'esoteric', 'ethereal', 'eulogize', 'evanescent', 'exacerbate', 'exalt', 'exasperate', 'exemplary', 'exhort',
+  'expedite', 'exponentiate', 'extol', 'extraneous', 'exuberant', 'facade', 'facile', 'fastidious', 'felicitous', 'ferocious',
+  'flagrant', 'flippant', 'florid', 'foible', 'forbearance', 'fortuitous', 'fractious', 'garrulous', 'grandiloquent', 'gregarious',
+  'hackneyed', 'hallowed', 'harangue', 'hedonistic', 'hierarchy', 'histrionic', 'hubris', 'iconoclast', 'idiosyncrasy', 'ignominious',
+  'immaculate', 'imminent', 'immutable', 'impervious', 'implacable', 'implicit', 'importune', 'impugn', 'incandescent', 'incessant',
+  'incisive', 'incorrigible', 'indefatigable', 'indigenous', 'indomitable', 'ineffable', 'inexorable', 'infinitesimal', 'ingenuous', 'inimical',
+  'innocuous', 'inscrutable', 'insipid', 'insouciant', 'interlocutor', 'intransigent', 'inundate', 'invective', 'inveigle', 'irascible',
+  'jaundiced', 'jettison', 'juxtapose', 'kaleidoscopic', 'kowtow', 'labyrinthine', 'lachrymose', 'laconic', 'lament', 'lampoon',
+  'legerdemain', 'licentious', 'limpid', 'luminous', 'magnanimous', 'malevolent', 'malleable', 'maudlin', 'maverick', 'mellifluous',
+  'mercurial', 'meticulous', 'mirthful', 'misanthrope', 'mnemonic', 'modicum', 'mollify', 'monolithic', 'morose', 'multifarious',
+  'munificent', 'mutable', 'myopic', 'nascent', 'nefarious', 'neologism', 'nihilistic', 'nomenclature', 'nonchalant', 'nondescript',
+  'nonplussed', 'nostalgia', 'noxious', 'obfuscate', 'oblivion', 'obsequious', 'obtuse', 'occlude', 'odious', 'officious',
+  'onerous', 'opaque', 'opulent', 'ostentatious', 'ostracize', 'overt', 'palpable', 'panache', 'paradoxical', 'pariah',
+  'parsimonious', 'pathos', 'peregrinate', 'perfidious', 'perfunctory', 'pernicious', 'pertinacious', 'pervasive', 'petulant', 'philistine',
+  'phlegmatic', 'piquant', 'platitude', 'plethora', 'polemic', 'portent', 'pragmatic', 'precocious', 'prevaricate', 'proclivity',
+  'profligate', 'propensity', 'prosaic', 'proscribe', 'protean', 'provenance', 'pulchritude', 'pusillanimous', 'quagmire', 'quandary',
+  'querulous', 'quiescent', 'quintessential', 'quixotic', 'rampant', 'rancor', 'rapprochement', 'recalcitrant', 'recant', 'recluse',
+  'recumbent', 'redolent', 'refractory', 'reiterate', 'relegate', 'renege', 'reproach', 'resilient', 'resolute', 'reverie',
+  'rhapsodize', 'risible', 'sagacious', 'salient', 'sanguine', 'sardonic', 'savant', 'scurrilous', 'serendipity', 'sesquipedalian',
+  'simulacrum', 'sinecure', 'solemnity', 'somnolent', 'spurious', 'stalwart', 'strident', 'sublime', 'subterfuge', 'succinct',
+  'superfluous', 'supine', 'sycophant', 'taciturn', 'tantamount', 'teetotaler', 'temerity', 'tenebrous', 'timorous', 'trepidation',
+  'truculent', 'ubiquitous', 'umbrage', 'unctuous', 'unilateral', 'unobtrusive', 'unprecedented', 'usurp', 'utilitarian', 'vacillate',
+  'vapid', 'venal', 'veracious', 'verbose', 'verdant', 'vestige', 'vicissitude', 'vilify', 'visceral', 'vitriolic',
+  'vociferous', 'wanton', 'winsome', 'wraith', 'xenophobia', 'yammer', 'yearn', 'yen', 'yoke', 'zealot',
+  'zenith', 'zephyr', 'zest', 'zigzag', 'zephyr', 'zymurgy'];
+  
+  let score = 0;
+  let timeRemaining = 60;
+  let gameRunning = false;
+  
+  function getRandomWord() {
+    const randomIndex = Math.floor(Math.random() * words.length);
+    return words[randomIndex];
+  }
+  
+  function createFallingWord() {
+    const fallingWord = document.createElement('div');
+    fallingWord.classList.add('falling-word');
+    fallingWord.textContent = getRandomWord();
+    gameContainer.appendChild(fallingWord);
+  
+    const fallInterval = setInterval(() => {
+      const currentTop = fallingWord.getBoundingClientRect().top;
+      const newTop = currentTop + 1; // Slower falling speed
+  
+      if (currentTop > window.innerHeight) {
+        clearInterval(fallInterval);
+        gameContainer.removeChild(fallingWord);
+        if (gameRunning) {
+          updateScore(-1); // Deduct score for missed word
+          playIncorrectSound();
+          checkGameOver();
+        }
+      } else {
+        fallingWord.style.top = newTop + 'px';
+  
+        if (currentTop + fallingWord.clientHeight >= window.innerHeight) {
+          clearInterval(fallInterval);
+          gameContainer.removeChild(fallingWord);
+          if (gameRunning) {
+            updateScore(-1); // Deduct score for missed word
+            playIncorrectSound();
+            checkGameOver();
+          }
+        }
+      }
+    }, 20);
+  }
+  
+  function updateScore(points) {
+    score += points;
+    score = Math.max(0, score);
+    scoreElement.textContent = 'Score: ' + score;
+  }
+  
+  function handleUserInput() {
+    const inputText = userInput.value.toLowerCase().trim();
+    const fallingWords = document.querySelectorAll('.falling-word');
+  
+    fallingWords.forEach((fallingWord) => {
+      if (!fallingWord.classList.contains('correct-word')) {
+        const wordText = fallingWord.textContent.toLowerCase().trim();
+  
+        if (inputText === wordText) {
+          fallingWord.classList.add('correct-word');
+          setTimeout(() => {
+            gameContainer.removeChild(fallingWord);
+            userInput.value = '';
+            updateScore(1); // Increment score for correct word
+            playCorrectSound();
+            checkGameOver();
+          }, 300);
+        }
+      }
+    });
+  }
+  
+  function playCorrectSound() {
+    correctSound.currentTime = 0;
+    correctSound.play();
+  }
+  
+  function playIncorrectSound() {
+    incorrectSound.currentTime = 0;
+    incorrectSound.play();
+  }
+  
+  function updateTimer() {
+    timerElement.textContent = 'Time: ' + timeRemaining + 's';
+  
+    if (timeRemaining <= 0) {
+      clearInterval(timerInterval);
+      gameOver();
+    } else {
+      timeRemaining--;
+    }
+  }
+  
+  function startGame() {
+    gameRunning = true;
+    timeRemaining = 60;
+    score = 0;
+    scoreElement.textContent = 'Score: 0';
+    gameOverElement.style.display = 'none';
+    userInput.disabled = false;
+    startBtn.style.display = 'none';
+    restartBtn.style.display = 'none';
+    userInput.value = '';
+    userInput.focus();
+  
+    const fallingWords = document.querySelectorAll('.falling-word');
+    fallingWords.forEach((fallingWord) => {
+      gameContainer.removeChild(fallingWord);
+    });
+  
+    timerInterval = setInterval(updateTimer, 1000);
+    setInterval(createFallingWord, 2000);
+  }
+  
+  function gameOver() {
+    gameRunning = false;
+    userInput.disabled = true;
+    restartBtn.style.display = 'block';
+    finalScoreElement.textContent = score;
+    gameOverElement.style.display = 'block';
+    gameOverElement.style.opacity = '1';
+  }
+  
+  function checkGameOver() {
+    const fallingWords = document.querySelectorAll('.falling-word');
+    const textRect = userInput.getBoundingClientRect();
+  
+    fallingWords.forEach((fallingWord) => {
+      if (!fallingWord.classList.contains('correct-word')) {
+        const wordRect = fallingWord.getBoundingClientRect();
+        if (
+          wordRect.bottom >= textRect.top &&
+          wordRect.left >= textRect.left &&
+          wordRect.right <= textRect.right
+        ) {
+          clearInterval(timerInterval);
+          gameOver();
+        }
+      }
+    });
+  }
+  
+  userInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      handleUserInput();
+    }
+  });
+  
+  startBtn.addEventListener('click', startGame);
+  restartBtn.addEventListener('click', startGame);
+  
+  let timerInterval;
+  
+  </script>
+</body>
+</html>

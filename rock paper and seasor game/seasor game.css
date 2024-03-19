@@ -1,0 +1,113 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    background-color: #2c3e50;
+    margin: 0;
+    padding: 0;
+    color: #ecf0f1;
+}
+
+#game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-top: 20px;
+}
+
+#result {
+    font-size: 1.5em;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #34495e;
+    color: #ecf0f1;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+#choices {
+    display: flex;
+    margin-top: 20px;
+}
+
+.choice1, .choice2, .choice3 {
+    cursor: pointer;
+    margin: 0 10px;
+    padding: 30px 60px; /* Increase padding for larger button */
+    font-size: 1.5em; /* Increase font size for larger text */
+    background-color: #3498db;
+    color: #ecf0f1;
+    border: 2px solid #2980b9;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    height: 80px;
+    width: 50px;
+}
+
+.choice:hover, .choice1:hover, .choice2:hover, .choice3:hover {
+    background-color: #2980b9;
+    transform: scale(1.1); /* Adjust the scaling factor for a slightly larger effect */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.choice1 {
+    background: url(stone.jpeg);
+    background-size: cover; /* Ensure the background image covers the entire button */
+}
+
+.choice2 {
+    background: url(paper.jpeg);
+    background-size: cover;
+}
+
+.choice3 {
+    background: url(seassor.png); /* Corrected the typo in the image file extension */
+    background-size: cover;
+}
+
+#score {
+    font-size: 1.2em;
+    margin-top: 20px;
+    color: #ecf0f1;
+}
+
+.game-buttons {
+    margin-top: 20px;
+}
+
+.game-button {
+    cursor: pointer;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+#start-button {
+    background-color: #27ae60;
+    color: #ecf0f1;
+}
+
+#start-button:hover {
+    background-color: #219653;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+#restart-button {
+    background-color: #e74c3c;
+    color: #ecf0f1;
+}
+
+#restart-button:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
